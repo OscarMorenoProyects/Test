@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo;
 
 import java.util.LinkedList;
+
 /**
  * Autores: Santiago Rodríguez Torres, Oscar Mateo Moreno
  * Fecha: 13/11/2024
@@ -21,6 +22,9 @@ public class Empleado extends Persona implements IGestionar {
         transacciones = new LinkedList<>();
     }
 
+
+
+    
     @Override
     public void crearCliente(String nombre, String id, String nombreDeUsuario, String contraseña,
             String palabraSecreta, String email, String direccion, String telefono) {
@@ -40,12 +44,11 @@ public class Empleado extends Persona implements IGestionar {
                 c.setEmail(cliente.getEmail());
                 c.setTelefono(cliente.getTelefono());
                 System.out.println("Cliente actualizado exitosamente.");
-                return;  
+                return;
             }
         }
         System.out.println("Cliente no encontrado.");
     }
-
 
     @Override
     public void crearVehiculo(Vehiculo vehiculo) {
@@ -77,7 +80,7 @@ public class Empleado extends Persona implements IGestionar {
         }
         System.out.println("Cliente no encontrado.");
     }
-    
+
 
     public String getPuesto() {
         return puesto;
@@ -122,6 +125,10 @@ public class Empleado extends Persona implements IGestionar {
     public void actualizarVehiculo(Vehiculo vehiculo) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'actualizarVehiculo'");
+    }
+
+    public void eliminarTransaccion(Transaccion transaccion){
+        
     }
 
 }

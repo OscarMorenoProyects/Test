@@ -1,5 +1,6 @@
 package co.edu.uniquindio.poo;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 /**
  * Autores: Santiago Rodríguez Torres, Oscar Mateo Moreno
@@ -7,22 +8,17 @@ import java.util.LinkedList;
  * Licencia: GNU GPL V3
  *
  */
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
-
 public class RegistroTransacciones {
     private String fecha;
     private LinkedList<Transaccion> transacciones;
-    private Set<String> codigosTransacciones; // Para optimizar la búsqueda de códigos duplicados
-
+    
     /*
      * Metodo constructor
      */
     public RegistroTransacciones(String fecha) {
         this.fecha = fecha;
         transacciones = new LinkedList<>();
-        codigosTransacciones = new HashSet<>();
+
     }
 
     /*
@@ -30,21 +26,41 @@ public class RegistroTransacciones {
      */
 
     public void registrarTransaccion(Transaccion transaccion){
-        if(codigosTransacciones.contains(transaccion.getCodigo())){
-            System.out.println("No se puede registrar la transaccion: Código duplicado");
-        } else {
+        if(verificarTransaccion(transaccion)){
+            System.out.println("No se puede registrar la transaccion");
+
+        } else{
             transacciones.add(transaccion);
-            codigosTransacciones.add(transaccion.getCodigo()); // Agregar el código al Set
             System.out.println("La transacción fue registrada de forma exitosa");
         }
+
     }
 
-    public boolean verificarTransaccion(Transaccion transaccion){
-        return codigosTransacciones.contains(transaccion.getCodigo()); // Verificación rápida usando el Set
+    public boolean verificarTransaccion(Transaccion transaccion ){
+        boolean sentinela = false;
+        for (Transaccion transaccionIterar : transacciones) {
+            if(transaccionIterar.getCodigo().equals(transaccion.getCodigo())){
+                sentinela = true;
+                break;
+            }
+            
+        } return sentinela;
+
+    }
+
+    public boolean eliminarTransaccion(String codigo){
+        boolean sentinela = false;
+        for (Transaccion transaccion : transacciones) {
+            if(transaccion.getCodigo().equals(codigo)){
+                transacciones.remove(transaccion);
+                return sentinela = true;
+            }
+            
+        } return sentinela; 
     }
 
     /*
-     * Métodos Get y Set
+     * Metodos Get  y Set
      */
 
     public String getFecha() {
@@ -62,4 +78,5 @@ public class RegistroTransacciones {
     public void setTransacciones(LinkedList<Transaccion> transacciones) {
         this.transacciones = transacciones;
     }
+
 }

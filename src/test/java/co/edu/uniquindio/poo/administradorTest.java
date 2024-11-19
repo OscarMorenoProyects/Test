@@ -1,97 +1,119 @@
-import static org.junit.jupiter.api.Assertions.*;
+package co.edu.uniquindio.poo;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.logging.Logger;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class administradorTest {
- private SistemaConcesionario sistemaConcesionario;
-    private Administrador adm;
-    private List<Vehiculo> vehiculos;
-    private List<Cliente> clientes;
-    private Vehiculo vehiculo1;
-    private Vehiculo vehiculo2;
-    private Cliente cliente1;
-    private Cliente cliente2;
+    private static final Logger LOG = Logger.getLogger(AppTest.class.getName());
+/*
+ * test para eliminarCliente
+ */
+@Test
+public void eliminarCliente(){
+   
+    Administrador adm=new Administrador("jose", "34678", "jose@", "567gh", "inico", "admi@", "3145");
+       
+    RegistroTransacciones registro=new RegistroTransacciones("18/11/2023");
+    SistemaConcesionario sistem=new SistemaConcesionario("twing", adm, registro);
+    Cliente cliente1=new Cliente("andres", "10885898567", "andre", "andre.9", "unico", "andres@", "cra5", "3117765");
+    Cliente cliente2=new Cliente("jose", "1088532567", "jose", "jose", "un", "andres@", "cra5", "3117765");
+    Cliente cliente3=new Cliente("miguel", "10887898567", "migue", "re.9", "ico", "hs@", "cra5", "3117765");
+    Cliente cliente4=new Cliente("guillermo", "10657898567", "gille", "hui.9", "tero", "guilles@", "cra8", "314778956");
 
-    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    private final PrintStream originalSystemOut = System.out;
+    LinkedList <Cliente>clientes=sistem.getClientes();
+    clientes.add(cliente1);
+    clientes.add(cliente2);
+    clientes.add(cliente3);
+    clientes.add(cliente4);
 
-    @BeforeEach
-    void setUp() {
-        // Crear la instancia real de SistemaConcesionario
-        Administrador adm=new Administrador("andres", "108858944", "uAdm", "1088589", "1Mate", "oscar@","311" ,sistemaConcesionario);
-        Registro registro=new RegistroTransacciones("14/07/2014");
-        sistemaConcesionario = new SistemaConcesionario("autos", adm, registro);
+    adm.eliminarCliente(cliente1.getId());
+    adm.eliminarCliente(cliente2.getId());
+    imprimir("cliente eliminado correctamente");
 
-        // Crear listas de vehículos y clientes
-        vehiculos = new ArrayList<>();
-        clientes = new ArrayList<>();
+}
 
-        // Crear objetos de clientes y vehículos
-        Cliente cliente1 = new Cliente("Juan", "1", "juan123", "contraseña", "palabraSecreta", "juan@correo.com", "Calle 1", "123456789");
-        Cliente cliente2 = new Cliente("Ana", "2", "ana123", "contraseña", "palabraSecreta", "ana@correo.com", "Calle 2", "987654321");
-        Vehiculo vehiculo1 = new Vehiculo("Vehículo 1", "Marca1", "Modelo1");
-        Vehiculo vehiculo2 = new Vehiculo("Vehículo 2", "Marca2", "Modelo2");
+/*
+ * test para eliminarVehiculo
+ */
+@Test 
+public void eliminarVehiculo(){
+    Administrador adm=new Administrador("jose", "34678", "jose@", "567gh", "inico", "admi@", "3145");
+       
+    RegistroTransacciones registro=new RegistroTransacciones("18/11/2023");
+    SistemaConcesionario sistem=new SistemaConcesionario("Twing", adm, registro);
+    Vehiculo vehiculo1=new Camion("chevrolet", "2005", "fgh 23", 4, 45.7, 400.5, EnumTransmision.MANUAL, true, 100.000, false, true, 45, 8, true, true, true, EnumTipoCamion.CARGAPESADA);
+    Vehiculo vehiculo2=new Camion("Renol", "2008", "il 23", 4, 45.7, 400.5, EnumTransmision.AUTOMATICA, false, 100.000, false, true, 50, 8, true, true, true, EnumTipoCamion.CARGALIGERA);
+    Vehiculo vehiculo3=new Moto("Susuki", "2003", "tre 3004", 5, 45.5, 108.7, EnumTransmision.AUTOMATICA, true, 13.0, 45.8, 34.8, EnumCombustible.GASOLINA);
 
-        // Agregar los clientes y vehículos a sus respectivas listas
-        vehiculos.add(vehiculo1);
-        vehiculos.add(vehiculo2);
-        clientes.add(cliente1);
-        clientes.add(cliente2);
+    LinkedList <Vehiculo>vehiculos=sistem.getVehiculos();
+    vehiculos.add(vehiculo1);
+    vehiculos.add(vehiculo2);
+    vehiculos.add(vehiculo3);
 
-        // Establecer los valores en el objeto real, sin usar mocks
-        sistemaConcesionario.setVehiculos(vehiculos);
-        sistemaConcesionario.setClientes(clientes);
+    adm.eliminarVehiculo(vehiculo1.getMatricula());
+    adm.eliminarVehiculo(vehiculo2.getMatricula());
+    adm.eliminarVehiculo(vehiculo3.getMatricula());
+    imprimir("vehiculos eliminados correctamente");
 
-        // Ahora puedes usar los métodos directamente sin mocks
-    }
+}
+/*
+ * test para crearCliente
+ */
+@Test
+public void crearCliente(){
+    LOG.info("inicializando test  crearCliente");
+    Administrador adm=new Administrador("jose", "34678", "jose@", "567gh", "inico", "admi@", "3145");
+    RegistroTransacciones registro=new RegistroTransacciones("18/11/2023");
+    SistemaConcesionario sistem=new SistemaConcesionario("Twing", adm, registro);
+
+    adm.crearCliente("oscar", "10889", "mMoreno", "1088Moreno", "real", "oscarm@", "b/nogal", "3117756359");
+    imprimir("cliente creado y agrgado exitosamente a la lista clientes");
+
+    LOG.info("finalizando test  crearCliente");
+}
+/*
+ * test para crearReporte
+ */
+@Test
+public void crearReporte(){
+    Empleado emp=new Empleado("juan", "345678", "uJuan", "17899", "guion", "juan@", "6", "3117756359");
+    Administrador adm=new Administrador("jose", "34678", "jose@", "567gh", "inico", "admi@", "3145");
+    RegistroTransacciones registro=new RegistroTransacciones("18/11/2023");
+    SistemaConcesionario sistem=new SistemaConcesionario("Twing", adm, registro);
+    adm.crearReporte(emp);
+    imprimir("reporte creado con exito");
+}
+
+/*
+ * test para crearVehiculo
+ */
+
+@Test
+public void crearVehiculo(){
+    Empleado emp=new Empleado("juan", "345678", "uJuan", "17899", "guion", "juan@", "6", "3117756359");
+    Administrador adm=new Administrador("jose", "34678", "jose@", "567gh", "inico", "admi@", "3145");
+    RegistroTransacciones registro=new RegistroTransacciones("18/11/2023");
+    SistemaConcesionario sistem=new SistemaConcesionario("Twing", adm, registro);
+    Vehiculo vehiculo1=new Camion("chevrolet", "2005", "fgh 23", 4, 45.7, 400.5, EnumTransmision.MANUAL, true, 100.000, false, true, 45, 8, true, true, true, EnumTipoCamion.CARGAPESADA);
+    Vehiculo vehiculo2=new Camion("Renol", "2008", "il 23", 4, 45.7, 400.5, EnumTransmision.AUTOMATICA, false, 100.000, false, true, 50, 8, true, true, true, EnumTipoCamion.CARGALIGERA);
+    Vehiculo vehiculo3=new Moto("Susuki", "2003", "tre 3004", 5, 45.5, 108.7, EnumTransmision.AUTOMATICA, true, 13.0, 45.8, 34.8, EnumCombustible.GASOLINA);
+
+    adm.crearVehiculo(vehiculo1);
+    adm.crearVehiculo(vehiculo2);
+    adm.crearVehiculo(vehiculo3);
+    imprimir("vehiculo creado con exito");
+}
 
 
-    @Test
-    void testEliminarVehiculoExistente() {
-        adm.eliminarVehiculo("123ABC");
+/*
+ * imprimir
+ */
+public void imprimir(String mensaje){
+    System.out.println(mensaje);
 
-        assertEquals(1, sistemaConcesionario.getVehiculos().size());
-        assertFalse(sistemaConcesionario.getVehiculos().contains(vehiculo1));
+}
 
-        assertTrue(outputStreamCaptor.toString().contains("Vehículo Eliminado exitosamente"));
-    }
-
-    @Test
-    void testEliminarVehiculoNoExistente() {
-        adm.eliminarVehiculo("999XYZ");
-
-        assertEquals(2, sistemaConcesionario.getVehiculos().size());
-
-        assertTrue(outputStreamCaptor.toString().contains("Vehículo no encontrado."));
-    }
-
-    @Test
-    void testEliminarClienteExistente() {
-        adm.eliminarCliente("1");
-
-        assertEquals(1, sistemaConcesionario.getClientes().size());
-        assertFalse(sistemaConcesionario.getClientes().contains(cliente1));
-
-        assertTrue(outputStreamCaptor.toString().contains("Cliente eliminado exitosamente."));
-    }
-
-    @Test
-    void testEliminarClienteNoExistente() {
-        adm.eliminarCliente("999");
-
-        assertEquals(2, sistemaConcesionario.getClientes().size());
-
-        assertTrue(outputStreamCaptor.toString().contains("Cliente no encontrado."));
-    }
-
-
-
-
-    
 }

@@ -15,7 +15,7 @@ public abstract class Transaccion {
     private String codigo;
 
     public Transaccion(
-        String codigo) {
+            String codigo) {
         this.codigo = codigo;
     }
 
@@ -64,12 +64,20 @@ public abstract class Transaccion {
         return codigo;
     }
 
+
+
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
-    protected abstract double getMonto();
+    public abstract double getMonto();
 
-    protected abstract String getTipo();
+    public abstract String getTipo();
+
+    @Override
+    public String toString() {
+        return "Transaccion [empleado=" + empleado + ", cliente=" + cliente + ", vehiculo=" + vehiculo + ", sistema="
+                + sistema + ", codigo=" + codigo + "]";
+    }
 
 }

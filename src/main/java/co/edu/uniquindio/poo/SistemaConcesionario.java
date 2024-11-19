@@ -12,7 +12,7 @@ public class SistemaConcesionario {
     private String nombre;
     private Administrador administrador;
     private LinkedList<Vehiculo> vehiculos;
-    private   LinkedList<Cliente> clientes;
+    private LinkedList<Cliente> clientes;
     private LinkedList<Empleado> empleados;
     private RegistroTransacciones registro;
     private LinkedList<Reporte> reportes;
@@ -28,11 +28,17 @@ public class SistemaConcesionario {
         empleados = new LinkedList<>();
         reportes = new LinkedList<>();
         this.registro = registro;
+
+        this.administrador.setSistemaConcesionario(this);
+
     }
 
-    /*
-     * Metodos Principales
-     */
+/**
+ * constrructor
+ * @param usuario
+ * @param password
+ * @return
+*/
 
     public Administrador obtenerAdministradorPorCredenciales(String usuario, String password) {
         if (administrador != null && administrador.getNombreDeUsuario().equals(usuario)
@@ -56,28 +62,25 @@ public class SistemaConcesionario {
         return null;
     }
 
-    public void agregarVehiculo(Vehiculo vehiculoParam) {
-        if (verificarVehiculo(vehiculoParam)) {
-            System.out.println("El cliente no se puede agregar porque ya existe");
-
-        } else {
-            vehiculos.add(vehiculoParam);
+    public void agregarVehiculo(Vehiculo vehiculo) {
+        if (verificarVehiculo(vehiculo)) {
+            throw new VehiculoYaExisteException("Error: El vehículo con matrícula '" + vehiculo.getMatricula() + "' ya existe en el sistema.");
         }
-
+        vehiculos.add(vehiculo); 
+        System.out.println("Vehículo con matrícula '" + vehiculo.getMatricula() + "' agregado correctamente.");
     }
+   
 
+    
     public boolean verificarVehiculo(Vehiculo vehiculo) {
-        boolean centinela = false;
-        for (Vehiculo c : vehiculos) {
-            if (c.getMatricula().equals(vehiculo.getMatricula())) {
-                centinela = true;
-                break;
-
+        for (Vehiculo v : vehiculos) {
+            if (v.getMatricula().equalsIgnoreCase(vehiculo.getMatricula())) {
+                return true; 
             }
-
         }
-        return centinela;
+        return false; 
     }
+    
 
     public void agregarCliente(Cliente cliente) {
         if (verificarCliente(cliente)) {
@@ -160,17 +163,27 @@ public class SistemaConcesionario {
 
     }
 
-    public LinkedList<Transaccion> obtenerTransaccionesPorEmpleado(Empleado empleado){
+    public LinkedList<Transaccion> obtenerTransaccionesPorEmpleado(Empleado empleado) {
         LinkedList<Transaccion> transaccions = new LinkedList<>();
 
-        for(int i = 0; i < empleado.getTransacciones().size(); i++){
+        for (int i = 0; i < empleado.getTransacciones().size(); i++) {
             transaccions.add(empleado.getTransacciones().get(i));
         }
         return transaccions;
     }
 
-   
+    public LinkedList<Vehiculo> getVehiculosCliente(Cliente clinte){
+        LinkedList<Vehiculo> lista = new LinkedList<>();
+        for(int i = 0;  i < clinte.getVehiculosPertenecientes().size(); i++){
+          lista.add(clinte.getVehiculosPertenecientes().get(i));
+        } return lista;
+            
+     }
 
+
+     public boolean verificarEm(Empleado empleado) {
+        return empleados.stream().anyMatch(e -> e.getId().equals(empleado.getId()));
+    }
 
 
     /*
@@ -193,7 +206,7 @@ public class SistemaConcesionario {
         this.vehiculos = vehiculos;
     }
 
-    public  LinkedList<Cliente> getClientes() {
+    public LinkedList<Cliente> getClientes() {
         return clientes;
     }
 

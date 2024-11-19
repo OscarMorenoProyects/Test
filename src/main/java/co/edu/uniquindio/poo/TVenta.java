@@ -8,9 +8,8 @@ import java.time.LocalDate;
  * Licencia: GNU GPL V3
  *
  */
-public class TransaccionVenta extends Transaccion {
+public class TVenta extends Transaccion {
 
-    private String codigo;
     private Cliente cliente;
     private Empleado empleado;
     private Vehiculo vehiculo;
@@ -18,9 +17,7 @@ public class TransaccionVenta extends Transaccion {
     private double monto;
     private SistemaConcesionario sistema;
 
-    
-
-    public TransaccionVenta(String codigo) {
+    public TVenta(String codigo) {
         super(codigo);
         this.monto = calcularMontoVenta();
 
@@ -61,24 +58,13 @@ public class TransaccionVenta extends Transaccion {
         }
     }
 
-    @Override
-    public String toString() {
-        return "TransaccionVenta [codigo=" + codigo + ", cliente=" + cliente + ", empleado=" + empleado + ", vehiculo="
-                + vehiculo + ", fechaVenta=" + fechaVenta + ", monto=" + monto + ", sistema=" + sistema + "]";
-    }
+   
 
     private double calcularMontoVenta() {
 
         return 25000.0;
     }
 
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
 
     public Cliente getCliente() {
         return cliente;
@@ -128,16 +114,15 @@ public class TransaccionVenta extends Transaccion {
         this.monto = monto;
     }
 
-    public Transaccion geTransaccion(){
+    public Transaccion geTransaccion() {
         return this;
     }
 
     @Override
-    protected String getTipo() {
+    public String getTipo() {
         return getClass().getSimpleName();
     }
 
 
     
-
 }

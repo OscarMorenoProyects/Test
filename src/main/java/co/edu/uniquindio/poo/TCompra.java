@@ -8,12 +8,12 @@ import java.time.LocalDate;
  * Licencia: GNU GPL V3
  *
  */
-public class TransaccionCompra extends Transaccion {
+public class TCompra extends Transaccion {
 
     private LocalDate fechaCompra;
     private double monto;
 
-    public TransaccionCompra(String codigo) {
+    public TCompra(String codigo) {
         super(codigo);
         this.monto = calcularMontoCompra();
     }
@@ -26,12 +26,12 @@ public class TransaccionCompra extends Transaccion {
             setEmpleado(empleado);
             setVehiculo(vehiculo);
             setFechaCompra(LocalDate.now());
-            vehiculo.setDisponible(false);
             this.monto = calcularMontoCompra();
 
             cliente.vehiculoAdquirido(vehiculo);
             sistema.getRegistro().registrarTransaccion(this);
             empleado.getTransacciones().add(this);
+            sistema.getVehiculos().remove(vehiculo);
 
             System.out.println("Transacción de compra procesada exitosamente para el vehículo: "
                     + vehiculo.getMarca() + " (" + vehiculo.getModelo() + ")");
@@ -39,8 +39,6 @@ public class TransaccionCompra extends Transaccion {
             System.out.println("El vehículo no pasó la revisión técnica y no se puede comprar.");
         }
     }
-
-
 
     public String getTipo() {
         return getClass().getSimpleName();
@@ -66,6 +64,5 @@ public class TransaccionCompra extends Transaccion {
     public void setMonto(double monto) {
         this.monto = monto;
     }
-
 
 }

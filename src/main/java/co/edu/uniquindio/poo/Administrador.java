@@ -1,7 +1,5 @@
 package co.edu.uniquindio.poo;
-
-import java.time.LocalDate;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * 
@@ -15,15 +13,15 @@ public class Administrador extends Persona implements IGestionar {
     private String telefono;
     private SistemaConcesionario sistemaConcesionario;
 
-    public Administrador(String nombre, String id, String nombreDeUsuario, String contraseña, String palabraSecreta,
-            String email, String telefono,SistemaConcesionario sistemaConcesionario) {
-        super(nombre, id, nombreDeUsuario, contraseña, palabraSecreta, email);
-        this.telefono = telefono;
-        this.sistemaConcesionario=sistemaConcesionario;
-    }
-    
 
     
+
+    public Administrador(String nombre, String id, String nombreDeUsuario, String contraseña, String palabraSecreta,
+            String email, String telefono) {
+        super(nombre, id, nombreDeUsuario, contraseña, palabraSecreta, email);
+        this.telefono = telefono;
+    }
+
     @Override
     public void eliminarVehiculo(String matricula) {
         for (Vehiculo vehiculo : sistemaConcesionario.getVehiculos()) {
@@ -31,6 +29,8 @@ public class Administrador extends Persona implements IGestionar {
                 sistemaConcesionario.getVehiculos().remove(vehiculo);
                 System.out.println("Vehículo Eliminado exitosamente");
                 return;
+            }else{
+                System.out.println("vehiculo no encontrado---");
             }
         }
         System.out.println("Vehículo no encontrado.");
@@ -49,8 +49,6 @@ public class Administrador extends Persona implements IGestionar {
                 sistemaConcesionario.getClientes().remove(cliente);
                 System.out.println("Cliente eliminado exitosamente.");
                 return;
-            }else if (cliente==null) {
-               System.out.println("cliente ya esta eliminado");
             }
         }
         System.out.println("Cliente no encontrado.");
@@ -90,25 +88,48 @@ public class Administrador extends Persona implements IGestionar {
         System.out.println("Vehículo " + vehiculo.getClass().getSimpleName() + " creado exitosamente");
     }
 
-
-     public void crearReporte(Empleado empleado) {
+    public void crearReporte(Empleado empleado) {
         // Generar un código único para el reporte
         String codigo = "REP-" + (sistemaConcesionario.getReportes().size() + 1);
 
-
-        Reporte nuevoReporte = new Reporte(codigo, LocalDate.now(), empleado);
-
-
-        List<Transaccion> transaccionesEmpleado = sistemaConcesionario.obtenerTransaccionesPorEmpleado(empleado);
-        for (Transaccion transaccion : transaccionesEmpleado) {
-            nuevoReporte.agregarTransaccion(transaccion);
-        }
-
+        Reporte nuevoReporte = new Reporte(codigo, empleado);
 
         sistemaConcesionario.getReportes().add(nuevoReporte);
 
-
         System.out.println("Reporte creado exitosamente:" + nuevoReporte.generarResumen());
+    }
+
+
+    
+    public void eliminarTransaccion(String code) {
+        Administrador adm=new Administrador("jose", "34678", "jose@", "567gh", "inico", "admi@", "3145");
+        
+        RegistroTransacciones registro=new RegistroTransacciones("18/11/2023");
+        SistemaConcesionario sistem=new SistemaConcesionario("Twing", adm, registro);
+        LinkedList<Transaccion>transferencias=registro.getTransacciones();
+        for (Transaccion pago :registro.getTransacciones() ) {
+            if (code.equals(pago.getCodigo())) {
+                transferencias.remove(pago);
+                imprimir("la transaccion fue eliminada con exito");
+            }
+        }
+       
+    }
+
+    public void imprimir(String mensaje){
+        System.out.println(mensaje);
+    }
+
+
+    public void eliminarEmpleado(Empleado empleado) {
+        for (Empleado iEmpleado : sistemaConcesionario.getEmpleados()) {
+            if (iEmpleado.getId().equals(empleado.getId())) {
+                sistemaConcesionario.getEmpleados().remove(empleado);
+                System.out.println("Empleado eliminado");
+                return;
+            }
+
+        }  System.out.println("El empleado no pudo ser eliminado");
     }
 
     public String getTelefono() {
@@ -128,8 +149,9 @@ public class Administrador extends Persona implements IGestionar {
     }
 
 
+
     @Override
-    public  boolean actualizarCliente(String contraseña,String direccion, String email,String id,String nombre,String nUsuario,String palabraSecreta,String telefono) {
+    public boolean actualizarCliente(String contraseña,String direccion, String email,String id,String nombre,String nUsuario,String palabraSecreta,String telefono) {
         for (Cliente cliente : sistemaConcesionario.getClientes()) {
             if (cliente.getId() == id) {
                cliente.setContraseña(contraseña);
@@ -140,37 +162,25 @@ public class Administrador extends Persona implements IGestionar {
                cliente.setNombreDeUsuario(nUsuario);
                cliente.setPalabraSecreta(palabraSecreta);
                cliente.setTelefono(telefono);
+               System.out.println("usuario actualizado correctamente");
                 return true;
-            }
+           
         }
-        return false; 
+        System.out.println(" usuario no encontrado");
     }
+    return false;
 
-
+    }
 
     @Override
     public void actualizarVehiculo(Vehiculo vehiculo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actualizarVehiculo'");
+       System.out.println("actualizando cambios");
     }
 
-    public boolean existeCliente(String idCliente) {
-        
-        return sistemaConcesionario.getClientes().contains(idCliente);
+    @Override
+    public String toString() {
+        return "Administrador [telefono=" + telefono + ", sistemaConcesionario=" + sistemaConcesionario
+                + ", getNombre()=" + getNombre() + ", getId()=" + getId() + ", getNombreDeUsuario()="
+                + getNombreDeUsuario() + ", getEmail()=" + getEmail() + ", getTelefono()=" + getTelefono() + "]";
     }
-
-    public Cliente buscarCliente(String id) {
-        Administrador adm= new Administrador("andres", "1088589844", "andresUser", "1097", "adm", "adm@", "3117756");
-        RegistroTransacciones reg=new RegistroTransacciones("18/11/2023");
-        SistemaConcesionario sistemaConcesionario=new SistemaConcesionario("aut", adm, reg);
-        for (Cliente cliente :sistemaConcesionario.getClientes() ) {
-            if (cliente.getId().equals(id)) {
-                return cliente; // Devuelve el cliente si lo encuentra
-            }
-        }
-        return null; // Devuelve null si no encuentra al cliente
-    }
-
-   
-    
 }

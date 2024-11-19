@@ -1,4 +1,5 @@
 package co.edu.uniquindio.poo;
+
 /**
  * Autores: Santiago Rodríguez Torres, Oscar Mateo Moreno
  * Fecha: 13/11/2024
@@ -15,7 +16,8 @@ public abstract class Vehiculo {
     private double precio;
     private boolean disponible;
 
-    public Vehiculo(String marca, String modelo, String matricula, int cambios, double velocidadMaxima, double cilindraje,
+    public Vehiculo(String marca, String modelo, String matricula, int cambios, double velocidadMaxima,
+            double cilindraje,
             Enum<EnumTransmision> transmision, boolean esNuevo, double precio) {
         this.marca = marca;
         this.modelo = modelo;
@@ -25,16 +27,21 @@ public abstract class Vehiculo {
         this.transmision = transmision;
         this.esNuevo = esNuevo;
         this.precio = precio;
-        this.disponible = false;
+        this.disponible = true;
         this.matricula = matricula;
     }
-    public boolean pasaRevisionTecnica(){
+
+    public boolean pasaRevisionTecnica() {
         boolean sentinela = false;
-        if(revisionTecnica.isAprobado()){
-           sentinela = true;
-        } return sentinela;
+        if (revisionTecnica == null) {
+        } else if (revisionTecnica.isAprobado()) {
+            sentinela = true;
+        }
+
+        return sentinela;
 
     }
+
     public void revisionTecnica(RevisionTecnica revision) {
         setRevisionTecnica(revision);
         setDisponible(true);
@@ -121,9 +128,11 @@ public abstract class Vehiculo {
     public void setRevisionTecnica(RevisionTecnica revisionTecnica) {
         this.revisionTecnica = revisionTecnica;
     }
+
     public String getMatricula() {
         return matricula;
     }
+
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }

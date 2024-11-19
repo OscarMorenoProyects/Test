@@ -20,18 +20,22 @@ public class Reporte {
     private int totalCompras;
     private double montoTotal;
 
-    public Reporte(String codigo,
-            LocalDate fechaDeReporte, Empleado empleado) {
+    public Reporte(String codigo, Empleado empleado) {
         this.codigo = codigo;
-        this.fechaDeReporte = fechaDeReporte;
+        this.fechaDeReporte = LocalDate.now();
         this.empleado = empleado;
-        transacciones = new LinkedList<>();
+        transacciones = empleado.getTransacciones();
+        calcularValores();
+
 
     }
 
-    public void agregarTransaccion(Transaccion transaccionParam) {
-        transacciones.add(transaccionParam);
-        actualizarTotales(transaccionParam);
+    public void calcularValores() {
+        for (Transaccion transaccion : transacciones) {
+            actualizarTotales(transaccion);
+            
+        }
+        System.out.println(generarResumen());
     }
 
     private void actualizarTotales(Transaccion transaccion) {

@@ -5,7 +5,7 @@ package co.edu.uniquindio.poo;
  * Licencia: GNU GPL V3
  *
  */
-public abstract class VehiculoElectrico extends Vehiculo {
+public abstract class VehiculoElectrico extends Vehiculo  {
     private double autonomiaCarga;
     private double tiempoPromedioCarga;
 

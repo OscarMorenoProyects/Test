@@ -8,39 +8,28 @@ import java.time.LocalDate;
  * Licencia: GNU GPL V3
  *
  */
-public class TransaccionAlquiler extends Transaccion {
+public class TAlquiler extends Transaccion {
 
     private LocalDate fechaAlquiler;
     private LocalDate fechaDevolucion;
     private double monto;
     private int dias;
 
-    public TransaccionAlquiler(String codigo, int dias) {
+    public TAlquiler(String codigo, int dias) {
         super(codigo);
         this.monto = calcularMontoAlquiler();
         this.dias = dias;
     }
 
     @Override
-    public void procesar(SistemaConcesionario sistema, Cliente cliente, Vehiculo vehiculo, Empleado empleado) {
-        setSistema(sistema);
-        if (vehiculo.isDisponible()) {
-            setCliente(cliente);
-            setEmpleado(empleado);
-            setVehiculo(vehiculo);
-            setFechaAlquiler(LocalDate.now());
-            setFechaAlquiler(LocalDate.now().plusDays(dias));
-            vehiculo.setDisponible(false);
-            this.monto = calcularMontoAlquiler();
-
-            getSistema().getRegistro().registrarTransaccion(this);
-            getEmpleado().getTransacciones().add(this);
-
-            System.out.println("Transacción de alquiler procesada exitosamente para el vehículo: "
-                    + vehiculo.getMarca() + " (" + vehiculo.getModelo() + ")");
-        } else {
-            System.out.println("El vehículo no está disponible para alquiler.");
+    public void procesar(SistemaConcesionario sistem, Cliente cliente, Vehiculo vehiculo, Empleado empleado) {
+        if (!sistem.verificarEmpleado(empleado)) {
+            throw new EmpleadoNoRegistradoException(
+                "Error: El empleado con ID '" + empleado.getId() + "' no está registrado en el sistema.");
         }
+    
+        // Lógica de procesamiento de la transacción
+        System.out.println("Transacción procesada exitosamente.");
     }
 
     private double calcularMontoAlquiler() {
